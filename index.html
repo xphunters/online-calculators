@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Updated Title -->
+    <title>Online Calculators - EMI, Rate Finder, BMI, Units, Age | Free</title>
+    <meta name="description" content="Free online calculators for EMI (Loan), finding Loan Interest Rate, BMI (Health), Unit Conversions (Length, Weight), and Age with detailed time breakdown. Easy to use, mobile-friendly.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ... (All CSS rules from the *previous* version remain the same) ... */
+        /* No significant CSS changes needed for the new tab, */
+        /* it will inherit existing styles. */
+        /* Just ensure the result area styles work well. */
+
+        /* --- Basic Reset & Global Styles --- */
+         * { box-sizing: border-box; margin: 0; padding: 0; }
+         body {
+            font-family: 'Poppins', sans-serif; line-height: 1.6;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: #2d3748; display: flex; justify-content: center;
+            align-items: flex-start; min-height: 100vh; padding: 20px;
+        }
+        .container {
+            background-color: #ffffff; padding: 0; border-radius: 16px;
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.12); max-width: 650px;
+            width: 100%; overflow: hidden;
+        }
+
+        /* --- Tab Navigation Styling --- */
+        .tab-nav-container { position: relative; background-color: #f8fafc; border-bottom: 1px solid #eaf0f6; }
+        .tab-nav { display: flex; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .tab-nav::-webkit-scrollbar { display: none; }
+        .tab-nav-container::after {
+            content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 40px;
+            background: linear-gradient(to left, #f8fafc 60%, transparent);
+            pointer-events: none; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 1;
+        }
+        .tab-nav-container.is-scrollable::after { opacity: 1; visibility: visible; }
+        .tab-link {
+            padding: 16px 20px; /* Adjusted padding slightly */ cursor: pointer; border: none; background: none;
+            font-family: 'Poppins', sans-serif; font-size: 0.88rem; /* Slightly smaller text */ font-weight: 600;
+            color: #4a5568; transition: color 0.3s ease, border-bottom 0.3s ease, background-color 0.3s ease;
+            white-space: nowrap; border-bottom: 4px solid transparent;
+            margin-bottom: -1px; flex-shrink: 0; display: flex;
+            align-items: center; gap: 6px; /* Reduced gap */
+        }
+        .tab-link svg { width: 16px; height: 16px; fill: currentColor; opacity: 0.7; transition: opacity 0.3s ease; }
+        .tab-link:hover { color: #5a67d8; background-color: #f0f4f8; }
+        .tab-link:hover svg { opacity: 1; }
+        .tab-link.active { color: #4c51bf; border-bottom-color: #4c51bf; font-weight: 700; }
+        .tab-link.active svg { opacity: 1; }
+
+        /* --- Tab Content Styling --- */
+        .tab-content { display: none; padding: 35px 30px; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- General Calculator Section Styling --- */
+        .calculator-section h2 { color: #1a202c; font-weight: 700; margin-bottom: 25px; text-align: center; font-size: 1.6rem; /* Adjusted size */ }
+        .input-group { margin-bottom: 22px; }
+        .input-group label { display: block; font-weight: 600; color: #4a5568; margin-bottom: 10px; font-size: 0.95rem; }
+        .input-group input[type="number"], .input-group input[type="date"], .input-group select {
+            width: 100%; padding: 12px 15px; border: 1px solid #d1dce8; border-radius: 8px;
+            font-family: 'Poppins', sans-serif; font-size: 1rem; color: #2d3748; background-color: #fdfdff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .input-group input::placeholder { color: #a0aec0; }
+        .input-group input:focus, .input-group select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25); }
+
+        /* --- Specific Input Group Styles --- */
+        .inline-inputs { display: flex; align-items: center; gap: 12px; }
+        .inline-inputs input { flex-grow: 1; }
+        .inline-inputs select { flex-shrink: 0; min-width: 90px; }
+        .inline-inputs span { font-size: 1.3rem; color: #718096; margin: 0 5px; }
+        .height-inputs { display: flex; gap: 15px; }
+        .height-inputs div { flex: 1; }
+
+        /* --- Calculate Button Styling --- */
+        .calculate-btn {
+            background-color: #667eea; color: #ffffff; border: 2px solid #667eea;
+            padding: 14px 30px; margin-top: 20px; border-radius: 30px; cursor: pointer;
+            font-size: 1.05rem; font-weight: 600; transition: all 0.3s ease; outline: none;
+            width: 100%; display: block; box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        }
+        .calculate-btn:hover { background-color: #5a67d8; border-color: #5a67d8; transform: translateY(-3px); box-shadow: 0 7px 15px rgba(90, 103, 216, 0.35); }
+        .calculate-btn:active { transform: scale(0.97); box-shadow: inset 0 3px 6px rgba(0,0,0,0.15); }
+        .calculate-btn:focus-visible { box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.4); }
+
+        /* --- Result Area Styling --- */
+        .result-area {
+            margin-top: 30px; padding: 20px; background-color: #eaf0f6;
+            border-radius: 10px; min-height: 60px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; font-size: 1.05rem;
+            color: #1a202c; font-weight: 500; word-wrap: break-word; line-height: 1.6;
+        }
+        .result-area span { color: #5a67d8; font-weight: 700; margin: 0 4px; }
+        .result-area .error { color: #dd3333; font-weight: 600; font-size: 0.95rem; }
+        .age-summary { margin-bottom: 15px; font-size: 1.1rem; }
+        .age-details { font-size: 0.9rem; color: #4a5568; width: 100%; padding-top: 15px; margin-top: 15px; border-top: 1px solid #d1dce8;}
+        .age-details p { margin-bottom: 5px;}
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 600px) {
+             .tab-link { padding: 14px 16px; gap: 5px; font-size: 0.85rem;} /* Further adjust padding */
+             .tab-link svg { width: 15px; height: 15px;}
+        }
+        @media (max-width: 480px) {
+            .tab-link { padding: 12px 12px; font-size: 0.8rem; } /* Even smaller */
+            .calculator-section h2 { font-size: 1.4rem; }
+            .tab-content { padding: 30px 20px; }
+            .inline-inputs { flex-direction: column; align-items: stretch; }
+            .inline-inputs span { display: none; }
+            .height-inputs { flex-direction: column; }
+            .calculate-btn { padding: 12px 25px; font-size: 1rem;}
+            .result-area { font-size: 1rem; padding: 15px;}
+            .age-summary { font-size: 1rem; }
+            .age-details { font-size: 0.85rem; }
+            .tab-nav-container::after { width: 30px; background: linear-gradient(to left, #f8fafc 40%, transparent); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Tab Navigation Wrapper -->
+        <div class="tab-nav-container" id="tabNavContainer">
+            <nav class="tab-nav" id="tabNav">
+                <!-- EMI Tab (Active by default) -->
+                <button class="tab-link active" data-tab="emi">
+                    <svg viewBox="0 0 24 24"><path d="M19.5 10.5c0-1.414-.566-2.77-1.55-3.754A5.268 5.268 0 0 0 14.25 5.25H7.5v1.5h6.75a3.75 3.75 0 0 1 3.75 3.75S18 11.25 18 11.25H6v1.5h12s.75-.75.75-.75zm-15 3h12.75v1.5H7.5a3.75 3.75 0 0 1-3.75-3.75A3.75 3.75 0 0 1 7.5 7.5H9v1.5H7.5a2.25 2.25 0 0 0-.95 4.316v.001c.004.001.007.002.011.003l.076.019a2.25 2.25 0 0 0 .863.162H18v1.5H6v1.5h12v3H6v-1.5z"></path></svg>
+                    EMI Calc
+                </button>
+                 <!-- NEW: Rate Finder Tab -->
+                <button class="tab-link" data-tab="findRate">
+                    <!-- Search/Magnifying glass Icon -->
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+                    Find Rate
+                </button>
+                <!-- BMI Tab -->
+                <button class="tab-link" data-tab="bmi">
+                    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+                    BMI Calc
+                </button>
+                <!-- Unit Converter Tab -->
+                <button class="tab-link" data-tab="unit">
+                    <svg viewBox="0 0 24 24"><path d="M21 3H8c-1.1 0-2 .9-2 2v3h2V5h13v14H8v-3H6v3c0 1.1.9 2 2 2h13c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 6h-2V7h2v2zm-4 0H9V7h2v2zm6 2h-2v-2h2v2zm-4 0h-2v-2h2v2zm-4 0H7v-2h2v2zm-3 6.5l4-4V17h2v-6H4v2h2.5l-4 4L4 19l4-4v2.5H6V21h6v-2h-1.5v-2.5l4 4z"></path></svg>
+                    Unit Conv
+                </button>
+                <!-- Age Tab -->
+                <button class="tab-link" data-tab="age">
+                     <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 1.99 2H19c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"></path></svg>
+                    Age Calc
+                </button>
+            </nav>
+        </div><!-- End .tab-nav-container -->
+
+
+        <!-- Tab Content -->
+
+        <!-- EMI Content (Active by default) -->
+        <div id="emi" class="tab-content active calculator-section">
+             <!-- ... (EMI content - Same as before) ... -->
+             <h2>Loan EMI Calculator</h2>
+             <div class="input-group"> <label for="loanAmount">Loan Amount (₹):</label> <input type="number" id="loanAmount" placeholder="e.g., 500000"> </div>
+             <div class="input-group"> <label for="interestRate">Annual Interest Rate (%):</label> <input type="number" id="interestRate" step="0.01" placeholder="e.g., 10.5"> </div>
+             <div class="input-group"> <label for="loanTenure">Loan Tenure (Years):</label> <input type="number" id="loanTenure" placeholder="e.g., 5"> </div>
+             <button class="calculate-btn" id="calculateEmiBtn">Calculate EMI</button>
+             <div class="result-area" id="emiResultArea">Enter loan details to see EMI.</div>
+        </div>
+
+        <!-- NEW: Rate Finder Content -->
+         <div id="findRate" class="tab-content calculator-section">
+            <h2>Find Loan Interest Rate</h2>
+            <div class="input-group">
+                <label for="findRateLoanAmount">Loan Amount Taken (₹):</label>
+                <input type="number" id="findRateLoanAmount" placeholder="e.g., 500000">
+            </div>
+             <div class="input-group">
+                <label for="findRateEmiPaid">Monthly EMI Paid (₹):</label>
+                <input type="number" id="findRateEmiPaid" placeholder="e.g., 10747">
+            </div>
+            <div class="input-group">
+                <label for="findRateLoanTenure">Loan Tenure (Total Years):</label>
+                <input type="number" id="findRateLoanTenure" placeholder="e.g., 5">
+            </div>
+            <button class="calculate-btn" id="calculateRateBtn">Find Interest Rate</button>
+            <div class="result-area" id="findRateResultArea">Enter details to find the interest rate.</div>
+        </div>
+
+
+        <!-- BMI Content -->
+        <div id="bmi" class="tab-content calculator-section">
+            <!-- ... (BMI content - Same as before) ... -->
+            <h2>BMI Calculator</h2>
+            <div class="input-group"> <label for="weight">Weight (kg):</label> <input type="number" id="weight" placeholder="e.g., 70" step="0.1"> </div>
+            <div class="input-group">
+                <label>Height:</label>
+                <div class="height-inputs">
+                    <div><label for="heightFeet" style="font-size: 0.85rem; margin-bottom: 6px;">Feet:</label><input type="number" id="heightFeet" placeholder="e.g., 5" min="0"></div>
+                    <div><label for="heightInches" style="font-size: 0.85rem; margin-bottom: 6px;">Inches:</label><input type="number" id="heightInches" placeholder="e.g., 9" min="0" max="11" step="0.1"></div>
+                </div>
+            </div>
+            <button class="calculate-btn" id="calculateBmiBtn">Calculate BMI</button>
+            <div class="result-area" id="bmiResultArea">Enter weight & height for BMI calculation.</div>
+        </div>
+
+        <!-- Unit Converter Content -->
+        <div id="unit" class="tab-content calculator-section">
+             <!-- ... (Unit Converter content - Same as before) ... -->
+             <h2>Unit Converter</h2>
+             <h3 style="font-weight: 600; font-size: 1.2rem; margin-bottom: 18px; color: #5a67d8; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Length</h3>
+             <div class="input-group inline-inputs"> <input type="number" id="unitValueLength" placeholder="Enter value"> <select id="unitFromLength"><option value="cm">cm</option><option value="m">m</option><option value="km">km</option><option value="inch">inch</option><option value="ft">ft</option><option value="yd">yd</option><option value="mi">mi</option></select> <span>=</span> <input type="number" id="unitResultLength" placeholder="Result" readonly style="background-color: #f0f4f8; cursor: not-allowed;"> <select id="unitToLength"><option value="inch">inch</option><option value="ft">ft</option><option value="m">m</option><option value="cm">cm</option><option value="km">km</option><option value="yd">yd</option><option value="mi">mi</option></select> </div>
+             <button class="calculate-btn" id="convertLengthBtn" style="margin-top: 5px; margin-bottom: 30px; background-color: #fff; color: #667eea;">Convert Length</button>
+             <div class="result-area" id="unitLengthResultArea" style="min-height: 30px; font-size: 0.95rem; margin-top: -20px; background: none; padding: 5px;"></div>
+             <h3 style="font-weight: 600; font-size: 1.2rem; margin-bottom: 18px; color: #5a67d8; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Weight</h3>
+             <div class="input-group inline-inputs"> <input type="number" id="unitValueWeight" placeholder="Enter value"> <select id="unitFromWeight"><option value="kg">kg</option><option value="lbs">lbs</option><option value="g">g</option><option value="oz">oz</option><option value="tonne">tonne</option></select> <span>=</span> <input type="number" id="unitResultWeight" placeholder="Result" readonly style="background-color: #f0f4f8; cursor: not-allowed;"> <select id="unitToWeight"><option value="lbs">lbs</option><option value="kg">kg</option><option value="g">g</option><option value="oz">oz</option><option value="tonne">tonne</option></select> </div>
+             <button class="calculate-btn" id="convertWeightBtn" style="margin-top: 5px; background-color: #fff; color: #667eea;">Convert Weight</button>
+             <div class="result-area" id="unitWeightResultArea" style="min-height: 30px; font-size: 0.95rem; margin-top: 10px; background: none; padding: 5px;"></div>
+        </div>
+
+        <!-- Age Content -->
+        <div id="age" class="tab-content calculator-section">
+            <!-- ... (Age content - Same as before, with structured result area) ... -->
+            <h2>Age Calculator</h2>
+            <div class="input-group"> <label for="birthDate">Select Your Date of Birth:</label> <input type="date" id="birthDate" name="birthDate"> </div>
+            <button class="calculate-btn" id="calculateAgeBtn">Calculate Age</button>
+            <div class="result-area" id="ageResultArea">
+                <div class="age-summary">Enter your birth date to find your age.</div>
+                <div class="age-details" style="display: none;"></div>
+            </div>
+        </div>
+
+
+    </div> <!-- End .container -->
+
+    <script>
+        // --- Tab Switching Logic (Same as before) ---
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const tabId = link.getAttribute('data-tab');
+                tabLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                tabContents.forEach(content => {
+                    content.classList.toggle('active', content.id === tabId);
+                });
+                checkTabScroll(); // Recheck scroll on tab switch
+            });
+        });
+
+        // --- Utility Function for Error Display (Updated for findRate) ---
+        function displayError(elementId, message) {
+            const resultArea = document.getElementById(elementId);
+            if (!resultArea) return;
+            // Specific handling for Age calculator's structure
+            if (elementId === 'ageResultArea') {
+                resultArea.querySelector('.age-summary').innerHTML = `<span class="error">${message}</span>`;
+                const detailsDiv = resultArea.querySelector('.age-details');
+                if (detailsDiv) {
+                    detailsDiv.style.display = 'none';
+                    detailsDiv.innerHTML = '';
+                }
+            } else { // Handles EMI, BMI, Rate Finder, Unit Converter results
+                resultArea.innerHTML = `<span class="error">${message}</span>`;
+            }
+        }
+
+        // --- Tab Scroll Indicator Logic (Same as before) ---
+        const tabNavContainer = document.getElementById('tabNavContainer');
+        const tabNav = document.getElementById('tabNav');
+        function checkTabScroll() {
+            if (!tabNav || !tabNavContainer) return;
+            const isScrollable = tabNav.scrollWidth > tabNav.clientWidth;
+            tabNavContainer.classList.toggle('is-scrollable', isScrollable);
+        }
+
+        // --- Standard EMI Calculation Function (Helper for Rate Finder) ---
+        function calculateEmiForRate(P, monthlyRate, N) {
+            if (monthlyRate <= 0) { // Handle 0% rate separately
+                return P / N;
+            }
+            const emiNumerator = P * monthlyRate * Math.pow(1 + monthlyRate, N);
+            const emiDenominator = Math.pow(1 + monthlyRate, N) - 1;
+            if (emiDenominator === 0) return Infinity; // Avoid division by zero
+            return emiNumerator / emiDenominator;
+        }
+
+
+        // --- NEW: Rate Finder Logic (using Binary Search) ---
+        const findRateLoanAmountInput = document.getElementById('findRateLoanAmount');
+        const findRateEmiPaidInput = document.getElementById('findRateEmiPaid');
+        const findRateLoanTenureInput = document.getElementById('findRateLoanTenure');
+        const calculateRateBtn = document.getElementById('calculateRateBtn');
+        const findRateResultArea = document.getElementById('findRateResultArea');
+
+        function calculateInterestRate() {
+            const P = parseFloat(findRateLoanAmountInput.value); // Loan Amount
+            const E = parseFloat(findRateEmiPaidInput.value); // EMI Paid
+            const T 
